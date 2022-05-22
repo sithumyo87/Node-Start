@@ -61,8 +61,12 @@
 // app.use("/users",userRouter);
 // app.listen(3000,console.log('Server is running at port 3000'));
 
-
+require('dotenv').config();
 const express = require('express');
+const mongoose = require('mongoose');
+
+mongoose.connect(`mongodb://localhost:27017/${process.env.DB_NAME}`);
+
 const app = express();
 app.use(express.json());
 
@@ -71,4 +75,4 @@ const postRouter = require('./routes/post');
 
 app.use("/users",userRouter);
 app.use("/post",postRouter);
-app.listen(3000,console.log('Server is running at port 3000'))
+app.listen(process.env.PORT,console.log(`Server is running at PORT ${process.env.PORT}`))
