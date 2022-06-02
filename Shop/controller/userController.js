@@ -33,7 +33,7 @@ const editUser = async(req,res,next) =>{
     let retUser = await DB.findById(user._id);
     Helper.fMsg(res,"Successfully Updated",retUser)
    }else{
-    res.json({msg:"Error Happening"})   
+    next(new Error("Error is happening")) ;
    }
     // res.json({msg:`Edit User Id ${req.params.id}`,result:req.body})
 }

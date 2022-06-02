@@ -77,6 +77,15 @@ app.use(express.json());
 const userRouter = require('./routes/users');
 const postRouter = require('./routes/post');
 
+
 app.use("/users",userRouter);
 app.use("/post",postRouter);
+
+app.use((err,req,res,next)=>{
+    err.status = err.status || 200;
+    res.status(err.status).json({
+        cons:false,
+        msg:err.message
+    })
+})
 app.listen(process.env.PORT,console.log(`Server is running at PORT ${process.env.PORT}`))
