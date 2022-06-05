@@ -61,9 +61,40 @@
 // app.use("/users",userRouter);
 // app.listen(3000,console.log('Server is running at port 3000'));
 
+//middleware
+// const userRouter = require('./routes/users');
+// const postRouter = require('./routes/post');
+
+// const furky = (req,res,next) =>{
+//     console.log(req.warningMsg);
+//     res.json({msg:"I am admin"})
+// }
+// const isLogin = (req,res,next)=>{
+//     if(4 * 1 == 4){
+//         req.successMsg = "Accpet permission";
+//         next();
+//     }else{
+//         next(new Error("Login Invalid"));
+//     }
+// }
+
+// const isAdmin = (req,res,next) =>{
+//     if(1+1 == 2){
+//         console.log(req.successMsg);
+//         req.warningMsg = "I am in ur system";
+//         next();
+//     }else{
+//         next(new Error("You cannot access to the system"))
+//     }
+// }
+// app.use("/users",isLogin,isAdmin,furky);
+
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
+const fileUpload = require('express-fileupload');
+
+const {imageUploads} = require('./utilies/gallery');
 
 // mongoose.connect(`mongodb://0.0.0.0:27017/${process.env.DB_NAME}`);
 mongoose.connect(`mongodb://localhost:27017/shopy`)
@@ -73,13 +104,19 @@ mongoose.connect(`mongodb://localhost:27017/shopy`)
 .catch(err => console.log(err));
 const app = express();
 app.use(express.json());
+app.use(fileUpload());
 
+
+app.post('/gallery',imageUploads,(req,res,next)=>{
+    res.status(200).json({msg:"Successfully Upload","filename":req.body.images})
+});
 const userRouter = require('./routes/users');
-const postRouter = require('./routes/post');
-
+ const postRouter = require('./routes/post');
+const processNested = require('express-fileupload/lib/processNested');
 
 app.use("/users",userRouter);
 app.use("/post",postRouter);
+
 
 app.use((err,req,res,next)=>{
     err.status = err.status || 200;
