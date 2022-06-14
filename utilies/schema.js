@@ -1,0 +1,50 @@
+const Joi = require('joi');
+
+module.exports ={
+        AddCat:Joi.object({
+            name:Joi.string().required(),
+            image:Joi.string().required(),
+            user:Joi.optional()
+        }),
+        RegisterSchema:Joi.object({
+            name:Joi.string().required(),
+            password:Joi.string().min(5).max(25).required(),
+            email:Joi.string().email().required(),
+            phone:Joi.string().min(8).max(11).required()
+        }),
+        CommentSchema:Joi.object({
+            post:Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
+            name:Joi.string().required(),
+            email:Joi.string().email().required(),
+            context:Joi.string().required(),
+            user:Joi.optional()
+        }),
+        PostSchema:Joi.object({
+            title:Joi.string().required(),
+            desc:Joi.string().required(),
+            image:Joi.string().required(),
+            cats:Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
+            tags:Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
+            user:Joi.optional(),
+        }),
+        TagSchema:{
+            add:Joi.object({
+                
+                image:Joi.string().required(),
+                name:Joi.string().required(),
+                user:Joi.optional()
+            }),
+        },
+        AllSchema:{
+            id:Joi.object({
+                id:Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
+            }),
+            page:Joi.object({
+                page:Joi.number().required()
+            }),
+            image:Joi.object({
+                image:Joi.string().required(),
+                user:Joi.optional()
+            })
+        }
+}
